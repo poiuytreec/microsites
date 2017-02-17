@@ -1,0 +1,150 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+        <div class="loading-message">
+            <div class="block-spinner-bar">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="!requesting">
+    <div class="row">
+        <div class="col-xs-9">
+            <div ng-if="job" class="table-responsive">
+                <table class="table">
+                    <thead class="hidden-sm hidden-xs">
+                    <tr>
+                        <th class="col-sm-2"></th>
+                        <th class="col-sm-10"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-if="job.id">
+                        <td>ID</td>
+                        <td>{{job.id}}</td>
+                    </tr>
+                    <tr ng-if="job.name">
+                        <td>Name</td>
+                        <td>{{job.name}}</td>
+                    </tr>
+                    <tr ng-if="job.owner">
+                        <td>Owner</td>
+                        <td>{{job.owner}}</td>
+                    </tr>
+                    <tr ng-if="job.status">
+                        <td>Status</td>
+                        <td>{{job.status}}</td>
+                    </tr>
+                    <tr ng-if="job.executionSystem">
+                        <td>Execution System</td>
+                        <td><a href="#/systems/{{job.executionSystem}}">{{job.executionSystem}}</a></td>
+                    </tr>
+                    <tr ng-if="job.archive">
+                        <td>Archive</td>
+                        <td>{{job.archive}}</td>
+                    </tr>
+                    <tr ng-if="job.archiveSystem">
+                        <td>Archive System</td>
+                        <td><a href="#/systems/{{job.archiveSystem}}">{{job.archiveSystem}}</a></td>
+                    </tr>
+                    <tr ng-if="job.archivePath">
+                        <td>Archive Path</td>
+                        <td><a href="#/data/explorer/{{job.archiveSystem}}/{{job.archivePath}}">{{job.archivePath}}</a>
+                        </td>
+                    </tr>
+                    <tr ng-if="job.outputPath">
+                        <td>Output Path</td>
+                        <td>{{job.outputPath}}</td>
+                    </tr>
+                    <tr ng-if="job.batchQueue">
+                        <td>Batch Queue</td>
+                        <td>{{job.batchQueue}}</td>
+                    </tr>
+                    <tr ng-if="job.appId">
+                        <td>Application ID</td>
+                        <td><a href="#/apps/details">{{job.appId}}</a></td>
+                    </tr>
+                    <tr ng-if="job.inputs">
+                        <td>Inputs</td>
+                        <td>
+                            <div ng-repeat="(key,value) in job.inputs">
+                                {{key}}: {{value}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-if="job.created">
+                        <td>Created</td>
+                        <td>{{job.created}}</td>
+                    </tr>
+                    <tr ng-if="job.localId">
+                        <td>Local ID</td>
+                        <td>{{job.localId}}</td>
+                    </tr>
+                    <tr ng-if="job.maxRunTime">
+                        <td>Max Run Time</td>
+                        <td>{{job.maxRunTime}}</td>
+                    </tr>
+                    <tr ng-if="job.memoryPerNode">
+                        <td>Memory Per Node</td>
+                        <td>{{job.memoryPerNode}}</td>
+                    </tr>
+                    <tr ng-if="job.nodeCount">
+                        <td>Node Count</td>
+                        <td>{{job.nodeCount}}</td>
+                    </tr>
+                    <tr ng-if="job.parameters">
+                        <td>Parameters</td>
+                        <td>
+                            <div ng-repeat="(key, value) in job.parameters">
+                                {{key}}: {{value}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-if="job.processorsPerNode">
+                        <td>ID</td>
+                        <td>{{job.processorsPerNode}}</td>
+                    </tr>
+                    <tr ng-if="job.retries">
+                        <td>Retries</td>
+                        <td>{{job.retries}}</td>
+                    </tr>
+                    <tr ng-if="job.submitTime">
+                        <td>Submit Time</td>
+                        <td>{{job.submitTime}}</td>
+                    </tr>
+                    <tr ng-if="job.startTime">
+                        <td>Start Time</td>
+                        <td>{{job.startTime}}</td>
+                    </tr>
+                    <tr ng-if="job.endTime">
+                        <td>End Time</td>
+                        <td>{{job.endTime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div ng-if="job" class="btn-group pull-right">
+                <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+                    Actions
+                    <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a ng-click="browse(job.id)" role="button">
+                            <i class="fa fa-folder-open-o"></i> Browse
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="apps.run({id:job.id})" role="button">
+                            <i class="fa fa-refresh"></i> Resubmit
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

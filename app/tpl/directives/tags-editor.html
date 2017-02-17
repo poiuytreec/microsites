@@ -1,0 +1,30 @@
+<div class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">{{system.name}} Tags</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-horizontal" ng-submit="updateTags()">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Tags</label>
+                        <div class="col-md-8">
+                            <ui-select multiple tagging="tagTransform" tagging-label="(add tag)" on-select="logEvents($item, $model)" on-remove="removeEvents($item, $model)" tagging-tokens="SPACE|,|/" ng-disabled="disabled" ng-model="tagModel.activeTags" theme="bootstrap" title="Select tags">
+                                <ui-select-match placeholder="Tags...">{{$item.name}}</ui-select-match>
+                                <ui-select-choices repeat="tag in tagModel.tagsAsync | filter:{name: $select.search} track by tag.id">
+                                    <div ng-if="tag.isTag" ng-bind-html="tag.name + ' ' + $select.taggingLabel | highlight: $select.search"></div>
+                                    <div ng-if="!tag.isTag" ng-bind-html="tag.name| highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn dark btn-outline" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary" ng-click="updateTags()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

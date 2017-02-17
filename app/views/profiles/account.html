@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title tabbable-line">
+                <div class="caption caption-md">
+                    <i class="icon-globe theme-font hide"></i>
+                    <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#" data-target="#tab_1_1" data-toggle="tab" >Personal Info</a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="#tab_1_2" data-toggle="tab">Profile Image</a>
+                    </li>
+                    <!--<li>-->
+                        <!--<a href="#" data-target="#tab_1_3" data-toggle="tab">Change Password</a>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+            <div class="portlet-body">
+                <div class="tab-content">
+                    <!-- PERSONAL INFO TAB -->
+                    <div class="tab-pane active" ngSubmit="updateProfile()" id="tab_1_1">
+                        <form role="form" action="#">
+                            <div class="form-group">
+                                <label class="control-label">First Name</label>
+                                <input type="text" name="profile-firstName" ng-model="profile.first_name" placeholder="" class="form-control" ng-readonly="username == 'me'"/> </div>
+                            <div class="form-group">
+                                <label class="control-label">Last Name</label>
+                                <input type="text" name="profile-lastName" ng-model="profile.last_name" placeholder="" class="form-control" ng-readonly="username == 'me'"/> </div>
+                            <div class="margiv-top-10">
+                                <a ng-if="username == 'me'" href="#" class="btn green-haze"> Save Changes </a>
+                                <!--<a ng-if="username == 'me'" href="#" class="btn default"> Cancel </a>-->
+                            </div>
+                        </form>
+                    </div>
+                    <!-- END PERSONAL INFO TAB -->
+                    <!-- CHANGE AVATAR TAB -->
+                    <div class="tab-pane" id="tab_1_2">
+                        <div class="well"> This application uses your <a href="https://en.gravatar.com/" target="_blank">Gravatar</a> your profile image. You can create and manage your Gravatar image at <a href="https://en.gravatar.com/" target="_blank">https://en.gravatar.com/</a></div>
+
+                    </div>
+                    <!-- END CHANGE AVATAR TAB -->
+                    <!--&lt;!&ndash; CHANGE PASSWORD TAB &ndash;&gt;-->
+                    <!--<div class="tab-pane" id="tab_1_3">-->
+                        <!--<form action="#" ngSubmit="updateProfile()">-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="control-label">Current Password</label>-->
+                                <!--<input type="password" name="profile-old-password" ng-model="profile.oldPassword" class="form-control" /> </div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="control-label">New Password</label>-->
+                                <!--<input type="password" name="profile-new-password" ng-model="profile.password" class="form-control" /> <div ng-password-strength="profile.password" mode="bootstrap" strength="passStrength"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="control-label">Re-type New Password</label>-->
+                                <!--<input type="password" name="profile-new-password-confirmation" ng-model="profile.passwordConfirmation" class="form-control" /> </div>-->
+                            <!--<div class="margin-top-10">-->
+                                <!--<a href="#" class="btn green-haze"> Change Password </a>-->
+                                <!--<a href="#" class="btn default"> Cancel </a>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; END CHANGE PASSWORD TAB &ndash;&gt;-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

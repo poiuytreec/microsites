@@ -1,0 +1,98 @@
+<!-- BEGIN PAGE BREADCRUMB -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a ui-sref="home">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li class="active"> User Profile </li>
+</ul>
+<!-- END PAGE BREADCRUMB -->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row" ng-controller="UserProfileController">
+    <div class="col-md-12">
+        <!-- BEGIN PROFILE SIDEBAR -->
+        <div class="profile-sidebar">
+            <!-- PORTLET MAIN -->
+            <div class="portlet light profile-sidebar-portlet">
+                <!-- SIDEBAR USERPIC -->
+                <div class="profile-userpic">
+                    <img ng-src="https://www.gravatar.com/avatar/{{ profile.email | gravatar }}" class="img-responsive" alt=""> </div>
+                <!-- END SIDEBAR USERPIC -->
+                <!-- SIDEBAR USER TITLE -->
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name"> {{ profile.firstName || profile.first_name}} {{ profile.lastName || profile.last_name}} </div>
+                    <div ng-if="!!profile.position && profile.position !== 'null'" class="profile-usertitle-job"> {{ profile.position }} </div>
+                </div>
+                <!-- END SIDEBAR USER TITLE -->
+                <!-- SIDEBAR BUTTONS -->
+                <div class="profile-userbuttons">
+                    <a href="mailto:{{profile.email}}" class="btn btn-circle green-haze btn-sm">Add</a>
+                    <a href="mailto:{{profile.email}}" class="btn btn-circle btn-danger btn-sm">Message</a>
+                </div>
+                <!-- END SIDEBAR BUTTONS -->
+                <!-- SIDEBAR MENU -->
+                <div class="profile-usermenu">
+                    <ul class="nav">
+                        <li ng-class="{active: $state.includes('profile.account')}">
+                            <a ui-sref="profile.account">
+                                <i class="icon-settings"></i> Account Settings </a>
+                        </li>
+                        <li ng-if="projects.length > 0">
+                            <a href="#/projects">
+                                <i class="icon-check"></i> Projects </a>
+                        </li>
+                        <li ng-class="{active: $state.includes('profile.search')}">
+                            <a ui-sref="profile.search">
+                                <i class="icon-info"></i> Directory </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- END MENU -->
+            </div>
+            <!-- END PORTLET MAIN -->
+            <!-- PORTLET MAIN -->
+            <div class="portlet light">
+                <!-- STAT -->
+                <div class="row list-separated profile-stat">
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="uppercase profile-stat-title"> {{jobCount}} </div>
+                        <div class="uppercase profile-stat-text"> Jobs </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="uppercase profile-stat-title"> {{appCount}} </div>
+                        <div class="uppercase profile-stat-text"> Apps </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="uppercase profile-stat-title"> {{systemCount}} </div>
+                        <div class="uppercase profile-stat-text"> Systems </div>
+                    </div>
+                </div>
+                <!-- END STAT -->
+                <div>
+                    <h4 class="profile-desc-title">About {{ profile.firstName }} {{ profile.lastName }}</h4>
+                    <span class="profile-desc-text"> {{profile.firstName}}{{ (!!profile.position && profile.position !== 'null') ? ' is a ' + profile.position : '' }}{{ !!profile.institution ? ' at ' + profile.institution : '' }}{{ !!profile.city ? ' in ' + profile.city : '' }}{{ (!!profile.state && !!profile.city) ? ', ' + profile.state : '' }} </span>
+                    <div ng-if="profile.institution" class="margin-top-20 profile-desc-link">
+                        <i class="fa fa-institution"></i>
+                        {{ profile.institution }}
+                    </div>
+                    <div ng-if="profile.department" class="margin-top-20 profile-desc-link">
+                        <i class="fa fa-graduation-cap"></i>
+                        {{ profile.department }}
+                    </div>
+                    <div ng-if="profile.email" class="margin-top-20 profile-desc-link">
+                        <i class="fa fa-envelope"></i>
+                        <a href="profile.email">{{profile.email}}</a>
+                    </div>
+                </div>
+            </div>
+            <!-- END PORTLET MAIN -->
+        </div>
+        <!-- END BEGIN PROFILE SIDEBAR -->
+        <!-- BEGIN PROFILE CONTENT -->
+        <div ui-view class="profile-content"> </div>
+        <!-- END PROFILE CONTENT -->
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+
+<!-- END PAGE CONTENT-->

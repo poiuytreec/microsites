@@ -1,0 +1,40 @@
+{
+  "name": "angular-filemanager",
+  "homepage": "https://github.com/joni2back/angular-filemanager",
+  "authors": [
+    "Jonas Sciangula Street <joni2back@gmail.com>"
+  ],
+  "description": "A very smart filemanager to manage your files in the browser.",
+  "main": "js/app.js",
+  "keywords": [
+    "filemanager"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.15",
+    "angular-translate": "~2.4.0",
+    "angular-cookies": "~1.3.17",
+    "angular-schema-form": "~0.8.12",
+    "bootstrap": "~3.3.2",
+    "jquery": "~2.1.3",
+    "bootswatch": "3.3.5",
+    "ng-file-upload": "^12.0.1",
+    "checklist-model": "0.9.0"
+  },
+  "_release": "d4f861ed6c",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "d4f861ed6c59f9fc428e13c2f5397735a682b2a6"
+  },
+  "_source": "https://bitbucket.org/agaveapi/angular-filemanager.git",
+  "_target": "master",
+  "_originalSource": "git+https://bitbucket.org/agaveapi/angular-filemanager.git"
+}

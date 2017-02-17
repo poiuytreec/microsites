@@ -1,0 +1,38 @@
+<div ng-controller="JobsResourceController">
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a ui-sref="home">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a ui-sref="jobs({id:jobId})">Jobs</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li class="active"> {{ jobId }}</li>
+
+    </ul>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light bordered">
+                <div class="portlet-title tabbable-line">
+                    <div class="caption">
+                        <i class="fa fa-server"></i>
+                        <span class="caption-subject font-dark bold uppercase"> {{ jobId }}</span>
+                    </div>
+
+                    <uib-tabset class="nav nav-tabs right" ng-show="!error">
+                        <uib-tab
+                                ng-repeat="t in tabs"
+                                heading="{{t.heading}}"
+                                select="go(t.route)"
+                                active="t.active">
+                        </uib-tab>
+                    </uib-tabset>
+                </div>
+                <div class="portlet-body">
+                    <div ui-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

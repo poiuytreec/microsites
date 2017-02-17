@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-sm-12 schema-form-actions">
+        <button type="button" class="btn btn-outline blue pull-left" ng-disabled="currentTabIndex == 0" ng-click="previousStep()">Previous</button>
+
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-outline blue" ng-disabled="currentTabIndex == form[0].tabs.length-1" ng-click="nextStep()">Next</button>
+            <button type="button" class="btn btn-primary mlm" ng-click="submit()">Submit</button>
+            <!-- <button type="button" class="btn btn-primary mlm" ng-disabled="myForm.$invalid" ng-click="submit()">Submit</button> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<div modal="jobSucess">
+  <div class="modal-header">
+    <h3 class="modal-title">Successfully resubmitted job</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <div ng-if="job" class="table-responsive">
+          <table class="table table-bordered">
+            <tbody>
+              <tr ng-if="job.id">
+                <td>ID</td>
+                <td>{{job.id}}</td>
+              </tr>
+              <tr ng-if="job.name">
+                <td>Name</td>
+                <td>{{job.name}}</td>
+              </tr>
+              <tr ng-if="job.owner">
+                <td>Owner</td>
+                <td>{{job.owner}}</td>
+              </tr>
+              <tr ng-if="job.status">
+                <td>Status</td>
+                <td>{{job.status}}</td>
+              </tr>
+              <tr ng-if="job.executionSystem">
+                <td>Execution System</td>
+                <td><a href="#/systems/{{job.executionSystem}}">{{job.executionSystem}}</a></td>
+              </tr>
+             <tr ng-if="job.archive">
+               <td>Archive</td>
+               <td>{{job.archive}}</td>
+             </tr>
+             <tr ng-if="job.archiveSystem">
+               <td>Archive System</td>
+               <td><a href="#/systems/{{job.archiveSystem}}">{{job.archiveSystem}}</a></td>
+             </tr>
+             <tr ng-if="job.archivePath">
+               <td>Archive Path</td>
+               <td><a href="#/data/explorer/{{job.archiveSystem}}/{{job.archivePath}}">{{job.archivePath}}</td>
+             </tr>
+             <tr ng-if="job.outputPath">
+               <td>Output Path</td>
+               <td>{{job.outputPath}}</td>
+             </tr>
+             <tr ng-if="job.batchQueue">
+               <td>Batch Queue</td>
+               <td>{{job.batchQueue}}</td>
+             </tr>
+             <tr ng-if="job.appId">
+               <td>Application ID</td>
+               <td><a href="#/apps/{{job.appId}}">{{job.appId}}</a></td>
+             </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-info" type="button" ui-sref="jobs({id: job.id})"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</button>
+    <!-- <a class="btn btn-primary" type="button" href="#/data/explorer/{{job.archiveSystem}}/{{job.archivePath}}"><i class="fa fa-file" aria-hidden="true"></i> Files</a> -->
+    <button class="btn btn-default" type="button" ng-click="close()"><i class="fa fa-sign-out" aria-hidden="true"></i> Exit</button>
+  </div>
+</div>

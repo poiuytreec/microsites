@@ -1,0 +1,53 @@
+<div class="search-page search-content-3">
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title tabbable-line">
+                <div class="caption caption-md">
+                    <i class="icon-globe theme-font hide"></i>
+                    <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="search-bar ">
+                    <div class="input-group">
+                        <input id="directory-search-input" type="text" class="form-control" name="search-term" ng-model="directorySearchTerm" placeholder="Search by name...">
+                        <span class="input-group-btn">
+                            <button class="btn green-haze" ng-click="searchProfiles()" type="button">Search</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-8 search-results">
+                    <div class="row mtxl">
+                        <div class="user-search-result col-md-4" ng-repeat="user in users">
+                            <div class="tile-container">
+                                <div class="tile-thumbnail">
+                                    <a href="javascript:;">
+                                        <img ng-src="https://www.gravatar.com/avatar/{{ user.email | gravatar }}?s=200" title="{{ user | fullName }}" alt="{{ user | fullName }}">
+                                    </a>
+                                </div>
+                                <div class="tile-title">
+                                    <h3>
+                                        <span class="user-search-title"><a href="javascript:;" title="{{ user | fullName }}">{{ user | fullName | excerpt:false}}</a></span>
+                                    </h3>
+                                    <!--<a href="javascript:;">-->
+                                        <!--<i class="icon-question font-blue"></i>-->
+                                    <!--</a>-->
+                                    <!--<a href="javascript:;">-->
+                                        <!--<i class="icon-plus font-green-meadow"></i>-->
+                                    <!--</a>-->
+                                    <div class="tile-desc">
+                                        <p>Email:
+                                            <a href="mailto:{{profile.email}}">{{user.email}}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

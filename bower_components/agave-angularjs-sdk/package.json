@@ -1,0 +1,19 @@
+{
+  "name": "agave-angularjs-sdk",
+  "version": "1.0.0",
+  "author": "Rion Dooley <dooley@tacc.utexas.edu>",
+  "contributors": [
+    {
+      "name": "Manuel Rojas",
+      "email": "mrojas@tacc.utexas.edu"
+    },
+    {
+      "name": "Sean Cleveland",
+      "email": "seanbc@hawaii.edu"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:agaveapi/angularjs-sdk.git"
+  }
+}

@@ -1,0 +1,23 @@
+<div class="schema-form-wizard">
+    <div ng-show="!codeview" ng-init="selected = { tab: 0 }" class="schema-form-tabs {{form.htmlClass}}">
+        <ul class="nav nav-tabs">
+            <li ng-repeat="tab in form.tabs"
+                class="disabled"
+                ng-class="{active: tab.active} ">
+                <a class="disabled" ng-disabled="true">{{ tab.title }}</a>
+            </li>
+        </ul>
+        <div class="tab-content {{form.fieldHtmlClass}}">
+            <div class="tab-pane"
+                ng-disabled
+                ng-repeat="tab in form.tabs"
+                ng-show="tab.active"
+                ng-class="{active: tab.active}">
+                <bootstrap-decorator ng-repeat="item in tab.items" form="item"></bootstrap-decorator>
+            </div>
+        </div>
+    </div>
+    <div ng-show="codeview" ng-init="selected = { tab: 0 }" class="schema-form-tabs {{form.htmlClass}}">
+        <textarea ui-codemirror ui-codemirror-opts="editorConfig" ng-model="prettyModel"></textarea>
+    </div>
+</div>

@@ -1,0 +1,251 @@
+<!-- BEGIN HEADER TOP -->
+<div class="page-header-top">
+    <div class="container">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo">
+            <a ui-sref="home">
+                <img src="{{settings.layoutPath}}/img/logo-default.png" alt="logo" class="logo logo-default"> </a>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:;" class="menu-toggler"></a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="top-menu">
+            <ul class="nav navbar-nav pull-right">
+                <!-- BEGIN STATUS DROPDOWN -->
+                <li class="dropdown dropdown-extended dropdown-dark dropdown-status" id="header_status_bar">
+                    <a href="#" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
+                        <i class="icon fa fa-sliders"></i>
+                        <span ng-if="platformStatus.statusCode == 400" class="badge badge-warning"> {{ platformStatus.issues.length }} </span>
+                        <span ng-if="platformStatus.statusCode > 400" class="badge badge-danger"> {{ platformStatus.issues.length }} </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="external">
+                            <h3><span class="bold">{{ platformStatus.issues.length }} active</span> service outage(s)</h3>
+                            <a href="http://status.agaveapi.co/">view all</a>
+                        </li>
+                        <li>
+                            <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                                <li ng-repeat="platformIssue in platformStatus.issues">
+                                    <a href="http://status.agaveapi.co/" title="{{platformIssue.status}}">
+                                        <span class="uptime">{{ platformIssue.updated | amDurationFormat : 'minute' }}</span>
+                                    <span class="details">
+                                        <span ng-if="platformIssue.statusCode == 400" class="label label-sm label-icon label-warning">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </span>
+                                        <span ng-if="platformIssue.statusCode != 400" class="label label-sm label-icon label-danger">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </span>
+                                        {{ platformIssue.component }}
+                                    </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END STATUS DROPDOWN -->
+                <!-- BEGIN TODO DROPDOWN -->
+                <li class="dropdown dropdown-extended dropdown-dark dropdown-tasks" id="header_task_bar">
+                    <a href="javascript:;" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
+                        <i class="rotate-90 icon-equalizer"></i>
+                        <span class="badge badge-default">{{activeTasks.length || ''}}</span>
+                    </a>
+                    <ul class="dropdown-menu extended tasks">
+                        <li class="external">
+                            <h3>You have
+                                <strong>{{ activeTasks.length }} active</strong> tasks</h3>
+                        </li>
+                        <li>
+                            <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                                <li ng-repeat="task in activeTasks" id="header-task-{{task.id}}">
+                                    <a href="javascript:;" title="{{ task.type }} - {{ task.id }}">
+                                        <span class="task">
+                                            <span class="desc">{{ task.name }}</span>
+                                            <span class="percent">{{ task.progress }}%</span>
+                                        </span>
+                                        <span class="progress">
+                                            <span style="width:{{ task.progress }}%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="sr-only">{{ task.progress }}% Complete</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END TODO DROPDOWN -->
+                <li class="droddown dropdown-separator">
+                    <span class="separator"></span>
+                </li>
+                <!-- BEGIN INBOX DROPDOWN -->
+                <li class="dropdown dropdown-extended dropdown-dark dropdown-inbox"  id="header_inbox_bar">
+                    <a href="javascript:;" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
+                        <span class="circle">{{ minbox.count }}</span>
+                        <span class="corner"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="external">
+                            <h3>You have
+                                <strong>{{minbox.count || 'No'}} New</strong> Messages</h3>
+                            <a ui-sref="inbox">view all</a>
+                        </li>
+                        <li ng-repeat="message in minbox.items" id="message-{{message.id}}">
+                            <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                                <li>
+                                    <a ui-sref="inbox({id:message.id})">
+                                        <span class="photo">
+                                            <img ng-src="https://www.gravatar.com/avatar/{{ message.author.email | gravatar }}" class="img-circle" alt=""> </span>
+                                        <span class="subject">
+                                            <span class="from"> {{message.subject}} </span>
+                                            <span class="time" am-time-ago="message.created"> </span>
+                                        </span>
+                                        <span class="message"> {{message.body | excerpt:true:20 }} </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END INBOX DROPDOWN -->
+                <!-- BEGIN USER LOGIN DROPDOWN -->
+                <li class="dropdown dropdown-user dropdown-dark">
+                    <a href="javascript:;" class="dropdown-toggle "  dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
+                        <img alt="" class="img-circle" ng-src="https://www.gravatar.com/avatar/{{ authenticatedUser.email | gravatar }}" />
+                        <span class="username username-hide-mobile">{{ authenticatedUser.firstName }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li class="tenant-badge">
+                            <a href="{{ tenant.contact.url || 'http://developer.agaveapi.co/' }}">
+                                <span class="logo">
+                                    <img ng-src="../assets/layouts/compute/img/tenants/{{tenant.code}}-icon.png">
+                                </span>
+                                <span class="details">
+                                    {{ tenant.name }} <br>
+                                    <span class="text-capitalize">Visit Website</span>
+                                </span></a>
+                        </li>
+                        <li ng-if="loggedIn">
+                            <a ui-sref="profile.account">
+                                <i class="icon-user"></i> My Profile </a>
+                        </li>
+                        <li class="divider"> </li>
+                        <li ng-if="loggedIn">
+                            <a href="#" >
+                                <i class="icon fa fa-clock-o"></i>
+                                <timer class="agave-message" countdown="tokenCountdown" interval="1000">
+                                    {{mminutes}}:{{sseconds}}
+                                </timer>  remaining
+                            </a>
+                        </li>
+                        <li ng-if="loggedIn">
+                            <a ui-sref="logout">
+                                <i class="icon-key"></i> Log Out
+                            </a>
+                        </li>
+                        <li ng-if="!loggedIn">
+                            <a ui-sref="login">
+                                <i class="icon-key"></i> Log In
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END USER LOGIN DROPDOWN -->
+            </ul>
+        </div>
+        <!-- END TOP NAVIGATION MENU -->
+    </div>
+</div>
+<!-- END HEADER TOP -->
+<!-- BEGIN HEADER MENU -->
+<div class="page-header-menu">
+    <div class="container">
+        <!-- BEGIN HEADER SEARCH BOX -->
+        <form class="search-form" action="extra_search.html" method="GET">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" name="query">
+                <span class="input-group-btn">
+                    <a href="javascript:;" class="btn submit">
+                        <i class="icon-magnifier"></i>
+                    </a>
+                </span>
+            </div>
+        </form>
+        <!-- END HEADER SEARCH BOX -->
+        <!-- BEGIN MEGA MENU -->
+        <!-- DOC: Apply "hor-menu-light" class after the "hor-menu" class below to have a horizontal menu with white background -->
+        <!-- DOC: Remove dropdown-menu-hover and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
+        <div class="hor-menu">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a ui-sref="home">Home</a>
+                </li>
+                <li class="menu-dropdown classic-menu-dropdown ">
+                    <a data-hover="megamenu-dropdown" ui-sref="jobs-manage">
+                        Compute
+                    </a>
+                </li>
+                <li class="menu-dropdown classic-menu-dropdown ">
+                    <a data-hover="megamenu-dropdown" ui-sref="data-explorer-noslash({systemId:settings.storageSystemId})">
+                        Data
+                    </a>
+                </li>
+                <!-- Full submenu custom icons -->
+                <li class="menu-dropdown classic-menu-dropdown ">
+                    <a data-hover="megamenu-dropdown" data-toggle="dropdown" href="javascript:;"> About
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li>
+                            <a ui-href="https://agaveapi.co/">
+                                <i class="icon-agave"></i> Agave Platform </a>
+                        </li>
+                        <li>
+                            <a ui-sref="https://togo.agaveapi.co/">
+                                <i class="icon-link"></i> Agave ToGo </a>
+                        </li>
+                        <li>
+                            <a ui-href="http://bitbucket.org/agaveapi/togo-micro-app">
+                                <i class="fa fa-bitbucket"></i> Fork on Bitbucket </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-dropdown classic-menu-dropdown ">
+                    <a data-hover="megamenu-dropdown" data-toggle="dropdown" href="javascript:;"> Support
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li>
+                            <a ui-sref="faq">
+                                <i class="icon-question"></i> FAQ </a>
+                        </li>
+                        <li>
+                            <a href="https://agaveapi.co/contact-us/">
+                                <i class="icon-envelope"></i> Contact </a>
+                        </li>
+                        <li>
+                            <a href="https://support.agaveapi.co/">
+                                <i class="icon-support"></i> Issues </a>
+                        </li>
+                        <li>
+                            <a href="http://slackin.agaveapi.co/">
+                                <i class="fa fa-slack"></i> Slack </a>
+                        </li>
+                        <li>
+                            <a href="http://status.agaveapi.co/">
+                                <i class="icon-fire"></i> Status </a>
+                        </li>
+                        <li>
+                            <a ui-sref="changelog">
+                                <i class="icon-directions"></i> Changelog </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- END MEGA MENU -->
+    </div>
+</div>
+<!-- END HEADER MENU -->

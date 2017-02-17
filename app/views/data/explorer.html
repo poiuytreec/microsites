@@ -1,0 +1,23 @@
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a ui-sref="home">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li class="active"> Data Explorer </li>
+
+</ul>
+<!-- END PAGE BREADCRUMB -->
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+
+<div class="row" ng-if="!error && !requesting">
+    <div class="col-md-12">
+        <div oc-lazy-load="lazyLoadFileManagerParams">
+          <angular-filemanager id="agave-filemanager" agave-system="system" agave-path="path" class="filebrowser"></angular-filemanager>
+        </div>
+    </div>
+
+</div>

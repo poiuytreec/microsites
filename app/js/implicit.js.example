@@ -1,0 +1,8 @@
+// dev config. This will work for anyone running the development client on localhost.
+var OAuthClients: {
+     'agave.prod': {
+         'clientKey': '_2xmhvwpwGOLwLqP6AkR9stGHoQa',
+         'callbackUrl': 'http://localhost:8080/app/',
+         'scope': 'PRODUCTION'
+     }
+};

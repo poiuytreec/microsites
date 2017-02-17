@@ -1,0 +1,15 @@
+<div modal="fileManager">
+    <div class="modal-header">
+      <h3 class="modal-title">File Manager</h3>
+    </div>
+    <div class="modal-body">
+        <input  ng-model="file"
+                onchange="angular.element(this).scope().fileUpload(this)"
+                type="file"
+                accept="text/plain" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+      <button ng-click="upload()" class="btn btn-primary" ng-disabled="!loading">Upload</button>
+    </div>
+</div>

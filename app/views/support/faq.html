@@ -1,0 +1,337 @@
+<!-- BEGIN PAGE BREADCRUMB -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a ui-sref="home">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li class="active"> FAQ </li>
+</ul>
+<!-- END PAGE BREADCRUMB -->
+<!-- BEGIN PAGE CONTENT INNER -->
+<div class="page-content-inner">
+    <div class="faq-page faq-content-1">
+        <div class="search-bar ">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for..."> </div>
+        </div>
+        <div class="faq-content-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="faq-section ">
+                        <script type="text/ng-template" id="group-template.html">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
+                                            <span uib-accordion-header ng-class="{'text-muted': isDisabled}"> {{heading}} </span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div class="panel-collapse collapse" uib-collapse="!isOpen">
+                                    <div class="panel-body" style="text-align: right" ng-transclude></div>
+                                </div>
+                            </div>
+                        </script>
+                        <h2 class="faq-title uppercase font-blue">General</h2>
+                        <uib-accordion class="faq-content" close-others="oneAtATime">
+                            <uib-accordion-group heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled"> This content is straight in the template. </uib-accordion-group>
+                            <uib-accordion-group heading="{{group.title}}" ng-repeat="group in groups"> {{group.content}} </uib-accordion-group>
+                            <uib-accordion-group heading="Dynamic Body Content">
+                                <p>The body of the uib-accordion group grows to fit the contents</p>
+                                <button type="button" class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
+                                <div ng-repeat="item in items">{{item}}</div>
+                            </uib-accordion-group>
+                            <uib-accordion-group heading="Custom template" template-url="group-template.html"> Hello </uib-accordion-group>
+                            <uib-accordion-group is-open="status.isCustomHeaderOpen" template-url="group-template.html">
+                                <uib-accordion-heading> Custom template with custom header template
+                                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+                                </uib-accordion-heading> World </uib-accordion-group>
+                            <uib-accordion-group heading="Delete account" panel-class="panel-danger">
+                                <p>Please, to delete your account, click the button below</p>
+                                <button class="btn btn-danger">Delete</button>
+                            </uib-accordion-group>
+                            <uib-accordion-group is-open="status.open">
+                                <uib-accordion-heading> I can have markup, too!
+                                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                                </uib-accordion-heading> This is just some content to illustrate fancy headings. </uib-accordion-group>
+                        </uib-accordion>
+                    </div>
+                    <div class="faq-section ">
+                        <h2 class="faq-title uppercase font-blue">Technical</h2>
+                        <div class="panel-group accordion faq-content" id="accordion3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_1"> How do I vote or respond to a poll?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_3_1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_2"> Do you accept purchase orders?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_3_2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_3"> How many responses per poll (which plan) do I need?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_3_3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_4"> What if my audience does not have a phone or a web-enabled device with internet access?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_3_4" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_5"> How can I share my poll with remote participants?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_3_5" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_6"> How fast do responses show up?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_3_6" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="faq-section ">
+                        <h2 class="faq-title uppercase font-blue">Pricing</h2>
+                        <div class="panel-group accordion faq-content" id="accordion2">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_1"> How much does it cost?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_2_1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_2"> Do you accept purchase orders?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_2_2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_3"> What is the K-12 classroom size promise?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_2_3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_4"> What if my audience does not have a phone or a web-enabled device with internet access?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_2_4" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_5"> How can I share my poll with remote participants?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_2_5" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_6"> How fast do responses show up?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_2_6" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-section ">
+                        <h2 class="faq-title uppercase font-blue">Admin Management</h2>
+                        <div class="panel-group accordion faq-content" id="accordion4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapse_4_1"> How do I vote or respond to a poll?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_4_1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapse_4_2"> Do you accept purchase orders?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_4_2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapse_4_3"> How many responses per poll (which plan) do I need?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_4_3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapse_4_4"> What if my audience does not have a phone or a web-enabled device with internet access?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_4_4" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-circle"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapse_4_5"> How can I share my poll with remote participants?</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_4_5" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                                            nesciunt laborum eiusmod. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE CONTENT INNER -->

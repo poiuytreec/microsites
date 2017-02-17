@@ -1,0 +1,12 @@
+{
+  "name": "agave-angularjs-sdk",
+  "_release": "d7291fdfbf",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "d7291fdfbf476dcf01934607ca7d729b7ca5efa0"
+  },
+  "_source": "https://bitbucket.org/agaveapi/angularjs-sdk.git",
+  "_target": "master",
+  "_originalSource": "git+https://bitbucket.org/agaveapi/angularjs-sdk.git"
+}

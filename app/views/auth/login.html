@@ -1,0 +1,43 @@
+<div class="page-content-inner">
+    <div class="row">
+        <div class="col-sm-6 col-xs-12 col-md-4 page-404">
+            <div class="portlet light portlet-fit ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class=" icon-layers font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Login</span>
+                        <div class="caption-desc font-grey-cascade"> Please login to continue. </div>
+                    </div>
+                </div>
+                <div class="portlet-body" ng-init="loadTenant()">
+                    <div class="mt-element-overlay" >
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mt-overlay-6">
+                                    <img class="tenant-icon" ng-src="../assets/layouts/compute/img/tenants/{{tenant.code}}.png">
+                                    <div class="mt-overlay">
+                                        <h2>{{tenant.name}}</h2>
+                                        <p>
+                                            <oauth
+                                                    template="views/auth/templates/oauth-ng-button.html"
+                                                    site="{{tenant.baseUrl}}"
+                                                    client-id="{{settings.oauth.clients[tenant.code].clientKey}}"
+                                                    redirect-uri="{{settings.oauth.clients[tenant.code].callbackUrl}}"
+                                                    authorize-path="/authorize"
+                                                    state="{{randomState()}}"
+                                                    scope="{{settings.oauth.clients[tenant.code].scope}}"
+                                                    tenant="{{tenant}}"
+                                                    storage="localStorage"
+                                                    profileUri="{{tenant.baseUrl + '/profiles/v2/me'}}" >
+                                            </oauth>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

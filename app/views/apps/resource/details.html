@@ -1,0 +1,155 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div ng-show="!requesting">
+  <div class="row">
+    <div class="col-xs-9">
+      <div ng-if="app" class="table-responsive">
+        <table class="table">
+          <thead class="hidden-sm hidden-xs">
+          <tr>
+             <th class="col-sm-2"></th>
+             <th class="col-sm-10"></th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr ng-if="app.id">
+             <td>ID</td>
+             <td><strong>{{app.id}}</strong></td>
+           </tr>
+           <tr ng-if="app.testPath">
+             <td>UUID</td>
+             <td>{{app.uuid}}</td>
+           </tr>
+           <tr ng-if="app.name">
+             <td>Name</td>
+             <td>{{app.name}}</td>
+           </tr>
+           <tr ng-if="app.longDescription">
+             <td>Description</td>
+             <td>{{app.longDescription}}</td>
+           </tr>
+           <tr ng-if="app.label">
+             <td>Label</td>
+             <td>{{app.label}}</td>
+           </tr>
+           <tr ng-if="app.version">
+             <td>Version</td>
+             <td>{{app.version}}</td>
+           </tr>
+           <tr>
+             <td>Public</td>
+             <td>{{app.isPublic}}</td>
+           </tr>
+           <tr>
+             <td>Available</td>
+             <td>{{app.available}}</td>
+           </tr>
+           <tr ng-if="app.defaultMaxRunTime">
+             <td>Default Max Runtime</td>
+             <td>{{app.defaultMaxRunTime}}</td>
+           </tr>
+           <tr ng-if="app.defaultMemoryPerNode">
+             <td>Default Memory Per Node</td>
+             <td>{{app.defaultMemoryPerNode}}</td>
+           </tr>
+           <tr ng-if="app.defaultNodeCount">
+             <td>Default Node Count</td>
+             <td>{{app.defaultNodeCount}}</td>
+           </tr>
+           <tr ng-if="app.defaultProcessorsPerNode">
+             <td>Default Processors Per Node</td>
+             <td>{{app.defaultProcessorsPerNode}}</td>
+           </tr>
+           <tr ng-if="app.defaultQueue">
+             <td>Default Queue</td>
+             <td><a href="#/systems/{{app.executionSystem}}/queues">{{app.defaultQueue}}</a></td>
+           </tr>
+           <tr ng-if="app.deploymentSystem">
+             <td>Deployment System</td>
+             <td><a href="#/systems/{{app.deploymentSystem}}">{{app.deploymentSystem}}</a></td>
+           </tr>
+           <tr ng-if="app.deploymentPath">
+             <td>Deployment Path</td>
+             <td><a href="#/data/explorer/{{app.deploymentSystem}}//{{app.deploymentPath}}">{{app.deploymentPath}}</a></td>
+           </tr>
+           <tr ng-if="app.executionSystem">
+             <td>Execution System</td>
+             <td><a href="#/systems/{{app.executionSystem}}">{{app.executionSystem}}</a></td>
+           </tr>
+           <tr ng-if="app.executionType">
+             <td>Execution Type</td>
+             <td>{{app.executionType}}</td>
+           </tr>
+           <tr ng-if="app.helpURI">
+             <td>Help Site</td>
+             <td><a href="{{app.helpURI}}" target="_blank">{{app.helpURI}}</a></td>
+           </tr>
+           <tr ng-if="app.inputs.length > 0">
+             <td>Inputs</td>
+             <td><json-formatter json="app.inputs" open="1"></json-formatter></td>
+           </tr>
+           <tr ng-if="app.modules.length > 0">
+             <td>Modules</td>
+             <td><json-formatter json="app.modules" open="1"></json-formatter></td>
+           </tr>
+           <tr ng-if="app.ontology.length > 0">
+             <td>Ontology</td>
+             <td><json-formatter json="app.ontology" open="1"></json-formatter></td>
+           </tr>
+           <tr ng-if="app.parallelism">
+             <td>Parallelism</td>
+             <td>{{app.parallelism}}</td>
+           </tr>
+           <tr ng-if="app.parameters.length > 0">
+             <td>Parameters</td>
+             <td><json-formatter json="app.parameters" open="1"></json-formatter></td>
+           </tr>
+           <tr ng-if="app.revision">
+             <td>Revision</td>
+             <td>{{app.revision}}</td>
+           </tr>
+           <tr ng-if="app.tags.length > 0">
+             <td>Tags</td>
+             <td><json-formatter json="app.tags" open="1"></json-formatter></td>
+           </tr>
+           <tr ng-if="app.lastModified">
+             <td>Last Modified</td>
+             <td am-time-ago="app.lastModified"></td>
+           </tr>
+           <tr ng-if="app.templatePath">
+             <td>Template Path</td>
+             <td>{{app.templatePath}}</td>
+           </tr>
+           <tr ng-if="app.testPath">
+             <td>Test Path</td>
+             <td>{{app.testPath}}</td>
+           </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div ng-if="app" class="btn-group pull-right">
+          <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+              Actions
+              <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu pull-right">
+              <li>
+                  <a ui-sref="apps.run({appId: app.id})" role="button"> <i class="fa fa-play"></i> Run </a>
+              </li>
+              <li class="divider"> </li>
+              <li>
+                  <a ng-click="getNotifications('app', app)" > <i class="fa fa-bell"></i> Notifications</a>
+              </li>
+              <li>
+                  <a ng-click="editPermissions(app)"> <i class="fa fa-share-alt"></i> Share </a>
+              </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>

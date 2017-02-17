@@ -1,0 +1,30 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div class="row" ng-show="!requesting">
+  <div class="col-lg-12">
+    <h2><em>{{app.label}}</em></h2>
+    <p>{{app.longDescription}}</p>
+    <p ng-if="app.helpURI">
+      <a href="{{app.helpURI}}" target="_blank">
+          <i class="fa fa-book"></i> <span><em>{{app.label}}</em> Documentation</span>
+      </a>
+    </p>
+    <form name="appForm"
+      sf-schema="form.schema"
+      sf-form="form.form"
+      sf-model="form.model"
+      sf-options="{ supressPropertyTitles: true,formDefaults: { ngModelOptions: { updateOn: 'blur' } }}"
+      ng-submit="onSubmit(appForm)">
+    </form>
+
+    <div ng-if="data.submitting">
+      <span class="label label-info">
+          <i class="fa fa-refresh fa-spin"></i>
+          Submitting job...
+      </span>
+    </div>
+  </div>
+</div>
