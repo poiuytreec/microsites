@@ -5,7 +5,7 @@
  */
 
 'use strict';
-angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q', 'Configuration', 'HttpClient', 'APIHelper', function ($q, Configuration, HttpClient, APIHelper) {
+angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', function ($q, Configuration, HttpClient, APIHelper) {
     return {
         /**
          * Add a new monitoring task
@@ -16,17 +16,17 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
         addMonitoringTasks: function (body) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/";
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -34,13 +34,13 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -49,8 +49,39 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user supplies an invalid form",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to save the monitor.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -67,12 +98,12 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
         getMonitoringTask: function (monitorId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/{monitorId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/{monitorId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'monitorId': monitorId
+                "monitorId": monitorId
             });
 
             //validate and preprocess url
@@ -80,18 +111,18 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -100,8 +131,46 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user does not supply a UUID",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 404) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The specified Monitor cannot be found",
+                        errorCode: 404,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -119,12 +188,12 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
         updateMonitoringTask: function (body, monitorId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/{monitorId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/{monitorId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'monitorId': monitorId
+                "monitorId": monitorId
             });
 
             //validate and preprocess url
@@ -132,9 +201,9 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -142,13 +211,13 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -157,8 +226,39 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user supplies an invalid form",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -175,12 +275,12 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
         deleteMonitoringTask: function (monitorId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/{monitorId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/{monitorId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'monitorId': monitorId
+                "monitorId": monitorId
             });
 
             //validate and preprocess url
@@ -188,17 +288,17 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -207,8 +307,39 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user supplies no UUID",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -233,22 +364,22 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             offset = offset || 0;
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/{monitorId}/checks';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/{monitorId}/checks";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'monitorId': monitorId
+                "monitorId": monitorId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true,
-                'endDate': endDate,
-                'limit': (null !== limit) ? limit : 250,
-                'offset': (null !== offset) ? offset : 0,
-                'result': (result !== null) ? result : null,
-                'startDate': startDate
+                "naked": true,
+                "endDate": endDate,
+                "limit": (null != limit) ? limit : 250,
+                "offset": (null != offset) ? offset : 0,
+                "result": (result != null) ? result : null,
+                "startDate": startDate
             });
 
             //validate and preprocess url
@@ -256,18 +387,18 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -276,8 +407,46 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user does not supply a UUID or supplies an invalid JSON query",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 404) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The specified Monitor cannot be found",
+                        errorCode: 404,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -294,11 +463,11 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
          */
         searchMonitoringTaskChecks: function (monitorId, query) {
             var baseUri = Configuration.BASEURI;
-            var queryBuilder = query ? baseUri + '/monitors/v2/{monitorId}/checks?' + query : baseUri + '/monitors/v2/{monitorId}/checks';
+            var queryBuilder = query ? baseUri + "/monitors/v2/{monitorId}/checks?" + query : baseUri + "/monitors/v2/{monitorId}/checks";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'monitorId': monitorId
+                "monitorId": monitorId
             });
 
             //validate and preprocess url
@@ -306,19 +475,19 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
                 cache: false
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -327,8 +496,46 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user does not supply a UUID or supplies an invalid JSON query",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 404) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The specified Monitor cannot be found",
+                        errorCode: 404,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -345,12 +552,12 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
         createForceMonitoringTaskCheck: function (monitorId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/{monitorId}/checks';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/{monitorId}/checks";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'monitorId': monitorId
+                "monitorId": monitorId
             });
 
             //validate and preprocess url
@@ -358,18 +565,18 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -378,8 +585,39 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user supplies an invalid form",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -397,18 +635,18 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
         getMonitoringTaskCheck: function (checkId, monitorId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/{monitorId}/checks/{checkId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/{monitorId}/checks/{checkId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'checkId': checkId,
-                'monitorId': monitorId
+                "checkId": checkId,
+                "monitorId": monitorId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -416,18 +654,18 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -436,8 +674,46 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user does not supply a UUID",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 404) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The specified Monitor cannot be found",
+                        errorCode: 404,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -456,21 +732,21 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
          */
         listMonitoringTasks: function (active, limit, offset, target) {
             //Assign default values
-            active = active || 'true';
+            active = active || "true";
             limit = limit || 100;
             offset = offset || 0;
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/monitors/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/monitors/v2/";
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true,
-                'active': (null !== active) ? active : 'true',
-                'limit': (null !== limit) ? limit : 100,
-                'offset': (null !== offset) ? offset : 0,
-                'target': target
+                "naked": true,
+                "active": (null != active) ? active : "true",
+                "limit": (null != limit) ? limit : 100,
+                "offset": (null != offset) ? offset : 0,
+                "target": target
             });
 
             //validate and preprocess url
@@ -478,18 +754,18 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -498,8 +774,46 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user does not supply a UUID or supplies an invalid JSON query",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 404) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The specified Monitor cannot be found",
+                        errorCode: 404,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -515,25 +829,25 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
          */
         searchMonitors: function (query) {
             var baseUri = Configuration.BASEURI;
-            var queryBuilder = query ? baseUri + '/monitors/v2/?' + query : baseUri + '/monitors/v2/';
+            var queryBuilder = query ? baseUri + "/monitors/v2/?" + query : baseUri + "/monitors/v2/";
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
             var deferred = $q.defer();
@@ -542,8 +856,46 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
             response.then(function (result) {
                 deferred.resolve(result.body);
             }, function (result) {
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user does not supply a UUID or supplies an invalid JSON query",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 401) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if the user is not authorized.",
+                        errorCode: 401,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 404) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The specified Monitor cannot be found",
+                        errorCode: 404,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deferred.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to process the request.",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
                 deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
@@ -551,5 +903,5 @@ angular.module('AgavePlatformScienceAPILib').factory('MonitorsController', ['$q'
 
             return deferred.promise;
         }
-    };
-}]);
+    }
+});

@@ -5,7 +5,7 @@
  */
 
 'use strict';
-angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q', 'Configuration', 'HttpClient', 'APIHelper', function ($q, Configuration, HttpClient, APIHelper) {
+angular.module('AgavePlatformScienceAPILib').factory('PostitsController', function ($q, Configuration, HttpClient, APIHelper) {
     return {
         /**
          * Create a new PostIt
@@ -16,12 +16,12 @@ angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q',
         addPostit: function (body) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/postits/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/postits/v2/";
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -29,9 +29,9 @@ angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -39,29 +39,60 @@ angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                //Error handling for custom HTTP status codes
+                if (result.code == 400) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user supplies an invalid username format",
+                        errorCode: 400,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 403) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
+                        errorCode: 403,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 404) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "The user profile cannot be found",
+                        errorCode: 404,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                } else if (result.code == 500) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to query the profile database",
+                        errorCode: 500,
+                        errorResponse: result.message
+                    }, result.getContext()));
+                    return;
+                }
+
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Immediately invalidates this PostIt URL.
@@ -72,17 +103,17 @@ angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q',
         deletePostit: function (nonce) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/postits/v2/{nonce}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/postits/v2/{nonce}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'nonce': nonce
+                "nonce": nonce
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -90,33 +121,33 @@ angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q',
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * List existing PostIts
@@ -131,14 +162,14 @@ angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q',
             offset = offset || 0;
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/postits/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/postits/v2/";
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true,
-                'limit': (null !== limit) ? limit : 100,
-                'offset': (null !== offset) ? offset : 0
+                "naked": true,
+                "limit": (null != limit) ? limit : 100,
+                "offset": (null != offset) ? offset : 0
             });
 
             //validate and preprocess url
@@ -146,35 +177,35 @@ angular.module('AgavePlatformScienceAPILib').factory('PostitsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
                 cache: false
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         }
-    };
-}]);
+    }
+});

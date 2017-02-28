@@ -12,8 +12,8 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
 
     // private method for UTF-8 encoding
     var _utf8_encode = function (string) {
-        string = string.replace(/\r\n/g, '\n');
-        var utftext = '';
+        string = string.replace(/\r\n/g, "\n");
+        var utftext = "";
 
         for (var n = 0; n < string.length; n++) {
 
@@ -22,7 +22,6 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
             if (c < 128) {
                 utftext += String.fromCharCode(c);
             } else if ((c > 127) && (c < 2048)) {
-                /*jslint bitwise: true */
                 utftext += String.fromCharCode((c >> 6) | 192);
                 utftext += String.fromCharCode((c & 63) | 128);
             } else {
@@ -35,32 +34,32 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
     };
 
     // private method for UTF-8 decoding
-    // var _utf8_decode = function (utftext) {
-    //     var string = '';
-    //     var i = 0;
-    //     var c = 0, c2 = 0, c3 = 0;
-    //
-    //     while (i < utftext.length) {
-    //
-    //         c = utftext.charCodeAt(i);
-    //
-    //         if (c < 128) {
-    //             string += String.fromCharCode(c);
-    //             i++;
-    //         } else if ((c > 191) && (c < 224)) {
-    //             c2 = utftext.charCodeAt(i + 1);
-    //             /*jslint bitwise: true */
-    //             string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
-    //             i += 2;
-    //         } else {
-    //             c2 = utftext.charCodeAt(i + 1);
-    //             c3 = utftext.charCodeAt(i + 2);
-    //             string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-    //             i += 3;
-    //         }
-    //     }
-    //     return string;
-    // };
+    var _utf8_decode = function (utftext) {
+        var string = "";
+        var i = 0;
+        var c = 0, c1 = 0, c2 = 0, c3 = 0;
+
+        while (i < utftext.length) {
+
+            c = utftext.charCodeAt(i);
+
+            if (c < 128) {
+                string += String.fromCharCode(c);
+                i++;
+            } else if ((c > 191) && (c < 224)) {
+                c2 = utftext.charCodeAt(i + 1);
+                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                i += 2;
+            } else {
+                c2 = utftext.charCodeAt(i + 1);
+                c3 = utftext.charCodeAt(i + 2);
+                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                i += 3;
+            }
+        }
+        return string;
+    };
+
 
     return {
 
@@ -73,29 +72,29 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
         appendUrlWithTemplateParameters: function (queryBuilder, parameters) {
 
             //perform parameter validation
-            if (queryBuilder === null) {
+            if (queryBuilder == null) {
                 return;
             }
 
-            if (parameters === null) {
+            if (parameters == null) {
                 return queryBuilder;
             }
 
             //iterate and replace parameters
             for (var key in parameters) {
-                var replaceValue = '';
+                var replaceValue = "";
 
                 //load parameter value
                 var element = parameters[key];
 
-                if (element === null) {
-                    replaceValue = '';
+                if (element == null) {
+                    replaceValue = "";
                 } else if (element instanceof Array) {
-                    replaceValue = element.join('/');
+                    replaceValue = element.join("/");
                 } else {
                     replaceValue = element.toString();
                 }
-                queryBuilder = queryBuilder.replace('{' + (key) + '}', replaceValue);
+                queryBuilder = queryBuilder.replace('{' + (key) + '}', replaceValue)
             }
             return queryBuilder;
         },
@@ -109,17 +108,17 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
         appendUrlWithQueryParameters: function (queryBuilder, parameters) {
 
             //perform parameter validation
-            if (queryBuilder === null) {
+            if (queryBuilder == null) {
                 return;
             }
-            if (parameters === queryBuilder) {
+            if (parameters == queryBuilder) {
                 return queryBuilder;
             }
 
             var hasParams = queryBuilder.indexOf('?') > -1;
             //iterate and replace parameters
             var encoded = this.urlEncodeObject(parameters);
-            var separator = (hasParams) ? '&' : '?';
+            var separator = (hasParams) ? '&' : '?'
             queryBuilder = queryBuilder + separator + encoded;
             return queryBuilder;
         },
@@ -134,10 +133,10 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
             //ensure that the urls are absolute
 
             var re = /^https?:\/\/[^\/]+/;
-            // var str = url;
+            var str = url;
 
             var match = url.match(re);
-            if (match === null) {
+            if (match == null) {
                 return;
 
             }
@@ -158,10 +157,10 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
          * @return {String}   Base64 encoded string
          */
         base64Encode: function (input) {
-            if (typeof btoa !== 'undefined') {
+            if (typeof btoa !== "undefined") {
                 return btoa(input);
             }
-            var output = '';
+            var output = "";
             var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
             var i = 0;
 
@@ -173,7 +172,6 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
                 chr2 = input.charCodeAt(i++);
                 chr3 = input.charCodeAt(i++);
 
-                /*jslint bitwise: true */
                 enc1 = chr1 >> 2;
                 enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
                 enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
@@ -198,7 +196,7 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
          * @return {String}   Base64 decoded string
          */
         base64Decode: function (input) {
-            if (typeof atob !== 'undefined') {
+            if (typeof atob !== "undefined") {
                 return atob(input);
             }
             var e = {},
@@ -207,13 +205,12 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
                 a, r = '',
                 w = String.fromCharCode,
                 L = input.length;
-            var A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+            var A = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
             for (i = 0; i < 64; i++) {
                 e[A.charAt(i)] = i;
             }
             for (x = 0; x < L; x++) {
                 c = e[input.charAt(x)];
-                /*jslint bitwise: true */
                 b = (b << 6) + c;
                 l += 6;
                 while (l >= 8) {
@@ -241,10 +238,10 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
          */
         formatString: function (str) {
 
-            if (!str || arguments.length <= 1){ return str; }
-
+            if (!str || arguments.length <= 1) return str;
+            var args = arguments;
             for (var i = 1; i < arguments.length; i++) {
-                var reg = new RegExp('\\{' + (i - 1) + '\\}', 'gm');
+                var reg = new RegExp("\\{" + (i - 1) + "\\}", "gm");
                 str = str.replace(reg, arguments[i]);
             }
             return str;
@@ -260,9 +257,9 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
                 var value = input[key];
                 if (typeof value === 'undefined' || value === null) {
                     if (input.constructor === Array) {
-                        input.splice(key, 1);
+                        input.splice(key, 1)
                     }
-                    else { delete input[key]; }
+                    else delete input[key];
                 } else if (Object.prototype.toString.call(value) === '[object Object]') {
                     this.cleanObject(value);
                 } else if (value.constructor === Array) {
@@ -278,7 +275,7 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
          * @return    {FormData} clean FormData object .
          */
         createFormData: function (obj) {
-            this.cleanObject(obj);
+            this.cleanObject(obj)
             var formData = new FormData();
             //Convert objects in proper encoding
             var dictionary = this.formDataEncodeObject(obj);
@@ -296,14 +293,15 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
          * @return    {string} Returns the url encoded formatted string. e.g input[0]=5.
          */
         prepareFormFieldsFromArray: function (name, values) {
+            var element = null;
             var formFields = {};
 
-            if (!values){ return formFields; }
+            if (!values) return formFields;
 
             for (var i = 0; i < values.length; i++) {
                 //replace null values with empty string to maintain index order
-                var elemValue = values[i] || '';
-                var key = this.formatString('{0}[{1}]', name, i);
+                var elemValue = values[i] || "";
+                var key = this.formatString("{0}[{1}]", name, i);
                 formFields[key] = elemValue;
             }
             return formFields;
@@ -331,7 +329,7 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
          * @returns {object} the modified first object.
          */
         appendContext: function (item, context) {
-            if (!(item instanceof Object)) { return; }
+            if (!(item instanceof Object)) return;
             item.getContext = function () {
                 return context;
             };
@@ -343,7 +341,7 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
          * @return {String}
          */
         formDataEncodeObject: function (obj, keys) {
-            var name, value, fullSubName, subName, subValue, innerObj, i;
+            var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
             if (!keys) {
                 keys = {};
             }
@@ -386,12 +384,12 @@ angular.module('AgavePlatformScienceAPILib').factory('APIHelper', function () {
         urlEncodeObject: function (obj) {
 
             var dict = this.formDataEncodeObject(obj);
-            var query = '';
+            var query = "";
             for (var name in dict) {
                 var value = dict[name];
-                query = query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+                query = query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&'
             }
             return query.length ? query.substr(0, query.length - 1) : query;
         }
-    };
+    }
 });

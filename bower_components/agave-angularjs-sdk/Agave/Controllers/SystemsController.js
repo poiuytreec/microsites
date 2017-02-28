@@ -5,7 +5,7 @@
  */
 
 'use strict';
-angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q', 'Configuration', 'HttpClient', 'APIHelper', function ($q, Configuration, HttpClient, APIHelper) {
+angular.module('AgavePlatformScienceAPILib').factory('SystemsController', function ($q, Configuration, HttpClient, APIHelper) {
     return {
       /**
          * Search systems
@@ -13,42 +13,42 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
          */
         searchSystems: function (query) {
             var baseUri = Configuration.BASEURI;
-            var queryBuilder = query ? baseUri + '/systems/v2/?' + query : baseUri + '/systems/v2/';
+            var queryBuilder = query ? baseUri + "/systems/v2/?" + query : baseUri + "/systems/v2/";
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
                 cache: true
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Show all systems available to the user.
@@ -66,18 +66,18 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
             limit = limit || 9999999;
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/";
 
             var params = {
-                'offset': offset,
-                'limit': (null !== limit) ? limit : 100,
-                'type': (type !== null) ? type : null
+                "offset": offset,
+                "limit": (null != limit) ? limit : 100,
+                "type": (type != null) ? type : null
             };
 
-            if (defaultSystems) { params['default'] = defaultSystems; }
-            if (publicSystems) { params['public'] = publicSystems; }
-            if (type) { params.type = type; }
+            if (defaultSystems) params['default'] = defaultSystems;
+            if (publicSystems) params["public"] = publicSystems;
+            if (type) params["type"] = type;
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, params);
@@ -87,35 +87,35 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
                 cache: true
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Add a new execution system
@@ -126,17 +126,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         addExecutionSystem: function (body) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/";
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -144,29 +144,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Find information about an individual system.
@@ -177,12 +177,12 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         getSystemDetails: function (systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //validate and preprocess url
@@ -190,34 +190,34 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Update a system description
@@ -229,12 +229,12 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         updateSystem: function (body, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //validate and preprocess url
@@ -242,9 +242,9 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -252,29 +252,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Delete a system.
@@ -285,17 +285,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         deleteSystem: function (systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -303,33 +303,33 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Deletes all roles on a system.
@@ -340,17 +340,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         deleteClearSystemRoles: function (systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/roles';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/roles";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -358,33 +358,33 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Update a user's role on a system.
@@ -397,18 +397,18 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         updateSystemRole: function (body, systemId, username) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/roles/{username}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/roles/{username}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId,
-                'username': username
+                "systemId": systemId,
+                "username": username
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -416,9 +416,9 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -426,29 +426,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Add an internal user's credential on a system. This applies both to storage and, if applicable, login credentials.
@@ -460,17 +460,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         addSystemCredential: function (body, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -478,9 +478,9 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -488,29 +488,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Deletes all credentials registered to a system.
@@ -521,17 +521,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         deleteClearSystemAuthCredentials: function (systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -539,33 +539,33 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Get a list of all internal users and their credentials on this system.
@@ -577,13 +577,13 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         listCredentialsForInternalUser: function (internalUsername, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials/{internalUsername}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials/{internalUsername}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'internalUsername': internalUsername,
-                'systemId': systemId
+                "internalUsername": internalUsername,
+                "systemId": systemId
             });
 
             //validate and preprocess url
@@ -591,34 +591,34 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Update an internal user's credentials on a system.
@@ -631,18 +631,18 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         updateSystemCredential: function (body, internalUsername, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials/{internalUsername}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials/{internalUsername}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'internalUsername': internalUsername,
-                'systemId': systemId
+                "internalUsername": internalUsername,
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -650,9 +650,9 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -660,29 +660,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Get the internal user credential of the given type on the system.
@@ -695,19 +695,19 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         getSystemCredential: function (credentialType, internalUsername, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials/{internalUsername}/{credentialType}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials/{internalUsername}/{credentialType}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'credentialType': (credentialType !== null) ? credentialType : null,
-                'internalUsername': internalUsername,
-                'systemId': systemId
+                "credentialType": (credentialType != null) ? credentialType : null,
+                "internalUsername": internalUsername,
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -715,34 +715,34 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Add or update a credential of the given type on a system.
@@ -756,19 +756,19 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         updateSystemCredentialOfType: function (body, credentialType, internalUsername, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials/{internalUsername}/{credentialType}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials/{internalUsername}/{credentialType}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'credentialType': (credentialType !== null) ? credentialType : null,
-                'internalUsername': internalUsername,
-                'systemId': systemId
+                "credentialType": (credentialType != null) ? credentialType : null,
+                "internalUsername": internalUsername,
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -776,9 +776,9 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -786,29 +786,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Deletes the internal user credentials for the given credential type on a system.
@@ -821,19 +821,19 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         deleteSystemAuthCredentialForInternalUser: function (credentialType, internalUsername, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials/{internalUsername}/{credentialType}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials/{internalUsername}/{credentialType}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'credentialType': (credentialType !== null) ? credentialType : null,
-                'internalUsername': internalUsername,
-                'systemId': systemId
+                "credentialType": (credentialType != null) ? credentialType : null,
+                "internalUsername": internalUsername,
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -841,33 +841,33 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Add  a storage system
@@ -878,17 +878,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         addStorageSystem: function (body) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2";
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -896,29 +896,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Deletes all internal user credentials registered to a system.
@@ -930,18 +930,18 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         deleteClearSystemAuthCredentialsForInternalUser: function (internalUsername, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials/{internalUsername}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials/{internalUsername}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'internalUsername': internalUsername,
-                'systemId': systemId
+                "internalUsername": internalUsername,
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -949,33 +949,33 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Deletes all roles for a user on a system.
@@ -987,18 +987,18 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         deleteSystemRole: function (systemId, username) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/roles/{username}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/roles/{username}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId,
-                'username': username
+                "systemId": systemId,
+                "username": username
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -1006,33 +1006,33 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Get a list of all internal user credentials on this system.
@@ -1048,19 +1048,19 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
             offset = offset || 0;
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/credentials';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/credentials";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true,
-                'limit': (null !== limit) ? limit : 100,
-                'offset': (null !== offset) ? offset : 0
+                "naked": true,
+                "limit": (null != limit) ? limit : 100,
+                "offset": (null != offset) ? offset : 0
             });
 
             //validate and preprocess url
@@ -1068,34 +1068,34 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Get a specific user's roles on this system.
@@ -1107,18 +1107,18 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         getSystemRole: function (systemId, username) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/roles/{username}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/roles/{username}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId,
-                'username': username
+                "systemId": systemId,
+                "username": username
             });
 
             //Process query parameters
             // queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-            //     'naked': true
+            //     "naked": true
             // });
 
             //validate and preprocess url
@@ -1126,34 +1126,34 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Get a list of all users and their roles on this system.
@@ -1169,19 +1169,19 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
             offset = offset || 0;
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}/roles';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}/roles";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true,
-                'limit': (null !== limit) ? limit : 100,
-                'offset': (null !== offset) ? offset : 0
+                "naked": true,
+                "limit": (null != limit) ? limit : 100,
+                "offset": (null != offset) ? offset : 0
             });
 
             //validate and preprocess url
@@ -1189,34 +1189,34 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Clone a system into  a new system. Previous system's auth credentials are not copied over
@@ -1228,17 +1228,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         updateCloneSystem: function (body, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -1246,9 +1246,9 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -1256,29 +1256,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'PUT',
+                method: "PUT",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Perform a management action on the system.
@@ -1290,17 +1290,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         updateInvokeSystemAction: function (body, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/v2/{systemId}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/v2/{systemId}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             // queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-            //     'naked': true
+            //     "naked": true
             // });
 
             //validate and preprocess url
@@ -1308,8 +1308,8 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -1317,29 +1317,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'PUT',
+                method: "PUT",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Adds a role on the system for the given user
@@ -1351,17 +1351,17 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
         addSystemRole: function (body, systemId) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/systems/{systemId}/roles';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/systems/{systemId}/roles";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'systemId': systemId
+                "systemId": systemId
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true
+                "naked": true
             });
 
             //validate and preprocess url
@@ -1369,9 +1369,9 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -1379,29 +1379,29 @@ angular.module('AgavePlatformScienceAPILib').factory('SystemsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         }
-    };
-}]);
+    }
+});

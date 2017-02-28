@@ -129,7 +129,6 @@ CodeMirror.defineMode('shell', function() {
     token: function(stream, state) {
       return tokenize(stream, state);
     },
-    closeBrackets: "()[]{}''\"\"``",
     lineComment: '#',
     fold: "brace"
   };

@@ -173,7 +173,6 @@ CodeMirror.defineMode("go", function(config) {
     },
 
     electricChars: "{}):",
-    closeBrackets: "()[]{}''\"\"``",
     fold: "brace",
     blockCommentStart: "/*",
     blockCommentEnd: "*/",

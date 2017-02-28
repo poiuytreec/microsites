@@ -28,11 +28,11 @@
     "ng-file-upload": "^12.0.1",
     "checklist-model": "0.9.0"
   },
-  "_release": "d4f861ed6c",
+  "_release": "cafc03f494",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "d4f861ed6c59f9fc428e13c2f5397735a682b2a6"
+    "commit": "cafc03f494f219fa8b1b3d1d3685139ec9cfadd4"
   },
   "_source": "https://bitbucket.org/agaveapi/angular-filemanager.git",
   "_target": "master",

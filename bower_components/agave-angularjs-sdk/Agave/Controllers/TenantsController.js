@@ -5,7 +5,7 @@
  */
 
 'use strict';
-angular.module('AgavePlatformScienceAPILib').factory('TenantsController', ['$q', 'Configuration', 'HttpClient', 'APIHelper', function ($q, Configuration, HttpClient, APIHelper) {
+angular.module('AgavePlatformScienceAPILib').factory('TenantsController', function ($q, Configuration, HttpClient, APIHelper) {
     return {
         /**
          * Get a list of available tenants.
@@ -22,52 +22,52 @@ angular.module('AgavePlatformScienceAPILib').factory('TenantsController', ['$q',
             queryParameters = queryParameters || null;
 
             //prepare query string for API call
-            var baseUri = 'https://agaveapi.co';
-            var queryBuilder = baseUri + '/tenants/';
+            var baseUri = "https://agaveapi.co"
+            var queryBuilder = baseUri + "/tenants/";
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'naked': true,
-                'limit': (null !== limit) ? limit : 100,
-                'offset': (null !== offset) ? offset : 0
+                "naked": true,
+                "limit": (null != limit) ? limit : 100,
+                "offset": (null != offset) ? offset : 0
             });
 
             //append optional parameters to the query
-            queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, queryParameters);
+            queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, queryParameters)
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json'
+                "accept": "application/json"
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
                 cache: true
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         }
-    };
-}]);
+    }
+});

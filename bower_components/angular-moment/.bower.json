@@ -23,7 +23,7 @@
     "type": "commit",
     "commit": "6e8cd1e"
   },
-  "_source": "https://github.com/urish/angular-moment.git",
+  "_source": "git://github.com/urish/angular-moment.git",
   "_target": "6e8cd1e",
   "_originalSource": "urish/angular-moment"
 }

@@ -230,21 +230,8 @@
             }
         };
 
-        // keep only unique files in uploader
-        $scope.uniqueFiles = function(array) {
-            var a = array.concat();
-            for(var i=0; i<a.length; ++i) {
-                for(var j=i+1; j<a.length; ++j) {
-                    if(a[i].name === a[j].name){
-                      a.splice(j--, 1);
-                    }
-                }
-            }
-            return a;
-        }
-
         $scope.addForUpload = function($files) {
-           $scope.uploadFileList = $scope.uniqueFiles($scope.uploadFileList.concat($files));
+           $scope.uploadFileList = $scope.uploadFileList.concat($files);
            $scope.modal('uploadfile');
         };
 

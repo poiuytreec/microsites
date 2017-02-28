@@ -6,7 +6,7 @@
  */
 
 'use strict';
-angular.module('AgavePlatformScienceAPILib').factory('HttpClient', ['$q', '$http', 'APIHelper', function ($q, $http, APIHelper) {
+angular.module('AgavePlatformScienceAPILib').factory('HttpClient', function ($q, $http, APIHelper, Configuration) {
 
     var convertHttpRequest = function (req) {
         //Convert to request's version of http request
@@ -19,7 +19,7 @@ angular.module('AgavePlatformScienceAPILib').factory('HttpClient', ['$q', '$http
         if (req.username) {
             //Basic auth....
             options.headers = options.headers || {};
-            options.headers.Authorization = 'Basic ' + APIHelper.base64Encode(req.username + ':' + req.password);
+            options.headers["Authorization"] = "Basic " + APIHelper.base64Encode(req.username + ":" + req.password);
         }
         if (req.body) {
             options.data = req.body;
@@ -28,7 +28,7 @@ angular.module('AgavePlatformScienceAPILib').factory('HttpClient', ['$q', '$http
             options.data = APIHelper.createFormData(req.formData);
             options.transformRequest = angular.identity;
             //need to reset content type header
-            options.headers['content-type'] = undefined;
+            options.headers["content-type"] = undefined;
         }
         if (req.form) {
             options.data = req.form;
@@ -37,14 +37,14 @@ angular.module('AgavePlatformScienceAPILib').factory('HttpClient', ['$q', '$http
                 return encoded;
             };
             //Set the content type
-            options.headers['content-type'] = 'application/x-www-form-urlencoded';
+            options.headers["content-type"] = 'application/x-www-form-urlencoded';
 
         }
         return options;
     };
 
     var convertHttpResponse = function (resp) {
-        var response = {};
+        var response = new HttpResponse();
         if (resp) {
             response.body = resp.data;
             response.headers = resp.headers;
@@ -66,12 +66,12 @@ angular.module('AgavePlatformScienceAPILib').factory('HttpClient', ['$q', '$http
         var convertedRequest = convertHttpRequest(req);
 
         //create a context to hold raw request and response
-        var context = {};
+        var context = new HttpContext();
         context.request = req;
 
         //make the http call.
         var response = $http(convertedRequest);
-        var deferred = $q.defer();
+        var deffered = $q.defer();
 
         response.then(function (resp) {
 
@@ -80,7 +80,7 @@ angular.module('AgavePlatformScienceAPILib').factory('HttpClient', ['$q', '$http
 
             //Append the context to the body for easy access
             APIHelper.appendContext(response.body, context);
-            deferred.resolve(response);
+            deffered.resolve(response);
 
         }, function (resp) {
             var response = convertHttpResponse(resp);
@@ -90,11 +90,11 @@ angular.module('AgavePlatformScienceAPILib').factory('HttpClient', ['$q', '$http
 
             //Append the context to the error object
             APIHelper.appendContext(error, context);
-            deferred.reject(error);
+            deffered.reject(error);
         });
 
-        return deferred.promise;
+        return deffered.promise;
     }
 
     return executeRequest;
-}]);
+});

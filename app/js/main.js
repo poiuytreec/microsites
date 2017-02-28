@@ -77,8 +77,8 @@ AgaveToGo.factory('settings', ['$rootScope', function($rootScope) {
     // supported languages
     var settings = {
         storageSystemId: 'data.agaveapi.co',
-        appId: 'fork-1.0',
-        //appId: 'cloud-runner-0.1.0',
+        //appId: 'fork-1.0',
+        appId: 'cloud-runner-0.1.0',
         // appId: 'wc-osg-1.0.0',
         tenantId: 'agave.prod',
         oauth: {
@@ -267,7 +267,7 @@ AgaveToGo.config(['$controllerProvider', function($controllerProvider) {
 AgaveToGo.controller('AppController', ['$scope', '$rootScope', function($scope, $rootScope) {
     $scope.$on('$viewContentLoaded', function() {
         App.initComponents(); // init core components
-        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive
+        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
     });
 
     $scope.$on('oauth:login', function(event, token) {

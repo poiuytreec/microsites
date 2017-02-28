@@ -5,7 +5,7 @@
  */
 
 'use strict';
-angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q', 'Configuration', 'HttpClient', 'APIHelper', function ($q, Configuration, HttpClient, APIHelper) {
+angular.module('AgavePlatformScienceAPILib').factory('ClientsController', function ($q, Configuration, HttpClient, APIHelper) {
     return {
         /**
          * List existing clients
@@ -15,42 +15,42 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
         listClients: function () {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/clients/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/clients/v2/";
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Create a new client
@@ -61,17 +61,17 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
         addClient: function (body) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/clients/v2/';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/clients/v2/";
 
             //validate and preprocess url
             var queryUrl = APIHelper.cleanUrl(queryBuilder);
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -79,60 +79,60 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
                 //Error handling for custom HTTP status codes
-                if (result.code === 400) {
-                    deferred.reject(APIHelper.appendContext({
-                        errorMessage: 'Raised if a user supplies an invalid username format',
+                if (result.code == 400) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "Raised if a user supplies an invalid username format",
                         errorCode: 400,
                         errorResponse: result.message
                     }, result.getContext()));
                     return;
-                } else if (result.code === 403) {
-                    deferred.reject(APIHelper.appendContext({
-                        errorMessage: 'Failed to authenticate the user',
+                } else if (result.code == 403) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "Failed to authenticate the user",
                         errorCode: 403,
                         errorResponse: result.message
                     }, result.getContext()));
                     return;
-                } else if (result.code === 404) {
-                    deferred.reject(APIHelper.appendContext({
-                        errorMessage: 'The user profile cannot be found',
+                } else if (result.code == 404) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "The user profile cannot be found",
                         errorCode: 404,
                         errorResponse: result.message
                     }, result.getContext()));
                     return;
-                } else if (result.code === 500) {
-                    deferred.reject(APIHelper.appendContext({
-                        errorMessage: 'The service was unable to query the profile database',
+                } else if (result.code == 500) {
+                    deffered.reject(APIHelper.appendContext({
+                        errorMessage: "The service was unable to query the profile database",
                         errorCode: 500,
                         errorResponse: result.message
                     }, result.getContext()));
                     return;
                 }
 
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Returns a detailed description of a named client.
@@ -143,12 +143,12 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
         getClient: function (clientName) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/clients/v2/{clientName}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/clients/v2/{clientName}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'clientName': clientName
+                "clientName": clientName
             });
 
             //validate and preprocess url
@@ -156,34 +156,34 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Immediately deletes this client and renders the API keys useless.
@@ -194,12 +194,12 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
         deleteClient: function (clientName) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/clients/v2/{clientName}';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/clients/v2/{clientName}";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'clientName': clientName
+                "clientName": clientName
             });
 
             //validate and preprocess url
@@ -207,34 +207,34 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Add a new API subscription to the given client
@@ -246,12 +246,12 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
         addClientAPISubscription: function (body, clientName) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/clients/v2/{clientName}/subscriptions';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/clients/v2/{clientName}/subscriptions";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'clientName': clientName
+                "clientName": clientName
             });
 
             //validate and preprocess url
@@ -259,9 +259,9 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'content-type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "content-type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //Remove null values
@@ -269,29 +269,29 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'POST',
+                method: "POST",
                 queryUrl: queryUrl,
                 headers: headers,
                 body: body
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Unsubscribe the client from all APIs
@@ -302,12 +302,12 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
         deleteClearClientAPISubscriptions: function (clientName) {
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/clients/v2/{clientName}/subscriptions';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/clients/v2/{clientName}/subscriptions";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'clientName': clientName
+                "clientName": clientName
             });
 
             //validate and preprocess url
@@ -315,34 +315,34 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'DELETE',
+                method: "DELETE",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         },
         /**
          * Lists all APIs to which the client is subscribed
@@ -358,18 +358,18 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
             offset = offset || 0;
 
             //prepare query string for API call
-            var baseUri = Configuration.BASEURI;
-            var queryBuilder = baseUri + '/clients/v2/{clientName}/subscriptions';
+            var baseUri = Configuration.BASEURI
+            var queryBuilder = baseUri + "/clients/v2/{clientName}/subscriptions";
 
             //Process template parameters
             queryBuilder = APIHelper.appendUrlWithTemplateParameters(queryBuilder, {
-                'clientName': clientName
+                "clientName": clientName
             });
 
             //Process query parameters
             queryBuilder = APIHelper.appendUrlWithQueryParameters(queryBuilder, {
-                'limit': (null !== limit) ? limit : 100,
-                'offset': (null !== offset) ? offset : 0
+                "limit": (null != limit) ? limit : 100,
+                "offset": (null != offset) ? offset : 0
             });
 
             //validate and preprocess url
@@ -377,34 +377,34 @@ angular.module('AgavePlatformScienceAPILib').factory('ClientsController', ['$q',
 
             //prepare headers
             var headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + Configuration.oAuthAccessToken
+                "accept": "application/json",
+                "Authorization": "Bearer " + Configuration.oAuthAccessToken
             };
 
             //prepare and invoke the API call request to fetch the response
             var config = {
-                method: 'GET',
+                method: "GET",
                 queryUrl: queryUrl,
                 headers: headers,
             };
 
-            var response = new HttpClient(config);
+            var response = HttpClient(config);
 
             //Create promise to return
-            var deferred = $q.defer();
+            var deffered = $q.defer();
 
             //process response
             response.then(function (result) {
-                deferred.resolve(result.body);
+                deffered.resolve(result.body);
             }, function (result) {
-                deferred.reject(APIHelper.appendContext({
-                    errorMessage: 'HTTP Response Not OK',
+                deffered.reject(APIHelper.appendContext({
+                    errorMessage: "HTTP Response Not OK",
                     errorCode: result.code,
                     errorResponse: result.message
                 }, result.getContext()));
             });
 
-            return deferred.promise;
+            return deffered.promise;
         }
-    };
-}]);
+    }
+});

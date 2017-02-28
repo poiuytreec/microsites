@@ -1,8 +1,8 @@
 // staging
 var OAuthClients = {
     "agave.prod": {
-        "clientKey": "Omz7oQ1cyOBBUUxsgJw2QofPnLYa",
-        "callbackUrl": "https://wonaya.github.io/microsites/app/index.html",
+        "clientKey": "_2xmhvwpwGOLwLqP6AkR9stGHoQa",
+        "callbackUrl": "http://localhost:8080/app/",
         "scope": "PRODUCTION"
     }
 };
