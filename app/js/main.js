@@ -78,9 +78,9 @@ AgaveToGo.factory('settings', ['$rootScope', function($rootScope) {
     var settings = {
         storageSystemId: 'data.agaveapi.co',
         //appId: 'fork-1.0',
-        appId: 'cloud-runner-0.1.0',
+        appId: 'zedalign-0.1u3',
         // appId: 'wc-osg-1.0.0',
-        tenantId: 'agave.prod',
+        tenantId: 'iplantc.org',
         oauth: {
             clients: OAuthClients,
             scope: 'PRODUCTION'
