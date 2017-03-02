@@ -76,7 +76,7 @@ var AgaveToGo = angular.module("AgaveToGo", [
 AgaveToGo.factory('settings', ['$rootScope', function($rootScope) {
     // supported languages
     var settings = {
-        storageSystemId: 'data.agaveapi.co',
+        storageSystemId: 'data.iplantcollaborative.org',
         //appId: 'fork-1.0',
         appId: 'zedalign-0.1u3',
         // appId: 'wc-osg-1.0.0',
